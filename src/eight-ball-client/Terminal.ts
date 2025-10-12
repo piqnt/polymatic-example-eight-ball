@@ -1,4 +1,4 @@
-import { Dataset, Driver, Memo, Middleware } from "polymatic";
+import { Binder, Driver, Memo, Middleware } from "polymatic";
 
 import { CueStick, Ball, Pocket, Rail, Table, type BilliardContext } from "../eight-ball/BilliardContext";
 
@@ -23,14 +23,6 @@ export class Terminal extends Middleware<BilliardContext> {
     this.on("deactivate", this.handleDeactivate);
     this.on("frame-loop", this.handleFrameLoop);
     this.on("main-start", this.handleStart);
-
-    this.dataset.addDriver(this.tableDriver);
-    this.dataset.addDriver(this.railDriver);
-    this.dataset.addDriver(this.pocketDriver);
-
-    this.dataset.addDriver(this.ballDriver);
-
-    this.dataset.addDriver(this.cueDriver);
 
     this.scorecardGroup = document.createElementNS(SVG_NS, "g");
     this.ballsGroup = document.createElementNS(SVG_NS, "g");
@@ -127,7 +119,7 @@ export class Terminal extends Middleware<BilliardContext> {
   handleFrameLoop = () => {
     if (!this.context.balls || !this.context.rails || !this.context.pockets) return;
 
-    this.dataset.data([
+    this.binder.data([
       this.context.table,
       ...this.context.rails,
       ...this.context.pockets,
@@ -228,7 +220,8 @@ export class Terminal extends Middleware<BilliardContext> {
     },
   });
 
-  dataset = Dataset.create<Ball | Rail | Pocket | CueStick | Table>({
+  binder = Binder.create<Ball | Rail | Pocket | CueStick | Table>({
     key: (data) => data.key,
+    drivers: [this.tableDriver, this.railDriver, this.pocketDriver, this.ballDriver, this.cueDriver],
   });
 }

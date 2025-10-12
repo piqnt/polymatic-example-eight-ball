@@ -1,5 +1,5 @@
 import { World, Circle, Polygon, type Vec2Value, Contact, Body, Settings } from "planck";
-import { Dataset, Driver, Middleware } from "polymatic";
+import { Binder, Driver, Middleware } from "polymatic";
 
 import { Ball, Pocket, Rail, type BilliardContext } from "./BilliardContext";
 
@@ -23,10 +23,6 @@ export class Physics extends Middleware<BilliardContext> {
     this.on("activate", this.setup);
     this.on("frame-loop", this.handleFrameLoop);
     this.on("cue-shot", this.handleCueShot);
-
-    this.dataset.addDriver(this.ballDriver);
-    this.dataset.addDriver(this.railDriver);
-    this.dataset.addDriver(this.pocketDriver);
   }
 
   handleCueShot(data: { ball: Ball; shot: Vec2Value }) {
@@ -47,7 +43,7 @@ export class Physics extends Middleware<BilliardContext> {
 
   handleFrameLoop(ev: { dt: number }) {
     if (!this.context.balls || !this.context.rails || !this.context.pockets) return;
-    this.dataset.data([...this.context?.balls, ...this.context?.rails, , ...this.context?.pockets]);
+    this.binder.data([...this.context?.balls, ...this.context?.rails, , ...this.context?.pockets]);
     this.time += ev.dt;
     while (this.time >= this.timeStep) {
       this.time -= this.timeStep;
@@ -105,10 +101,6 @@ export class Physics extends Middleware<BilliardContext> {
       }
     }
   };
-
-  dataset = Dataset.create<Entity>({
-    key: (data) => data.key,
-  });
 
   ballDriver = Driver.create<Ball, Body>({
     filter: (data) => data.type === "ball",
@@ -180,5 +172,10 @@ export class Physics extends Middleware<BilliardContext> {
     exit: (data, body) => {
       this.world.destroyBody(body);
     },
+  });
+
+  binder = Binder.create<Entity>({
+    key: (data) => data.key,
+    drivers: [this.ballDriver, this.railDriver, this.pocketDriver],
   });
 }
