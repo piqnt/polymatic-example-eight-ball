@@ -1,0 +1,113 @@
+/* The table fills the window as an svg; this sits over it. #ui-root is
+   transparent to pointers so a drag still aims the cue, and only the controls
+   here take the pointer back. */
+
+.status {
+  position: absolute;
+  top: 0.5em;
+  left: 0.5em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  align-items: flex-start;
+  color: #d7d1cb;
+}
+
+/* the room id is worth reading out to someone, so it stays selectable */
+.line {
+  pointer-events: auto;
+  user-select: text;
+}
+
+.room {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.25em 0.6em;
+  border-radius: 0.4em;
+  background: rgba(0, 0, 0, 0.35);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.error {
+  color: #ff9f9f;
+}
+
+.controls {
+  position: absolute;
+  bottom: 0.5em;
+  left: 0.5em;
+  display: flex;
+  gap: 0.4em;
+}
+
+.button {
+  pointer-events: auto;
+  padding: 0.45em 0.8em;
+  border: none;
+  border-radius: 0.4em;
+  background: #514940;
+  color: #ece7e1;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #625950;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+  background: rgba(20, 19, 18, 0.6);
+}
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+  min-width: 16em;
+  padding: 1.2em;
+  border-radius: 0.6em;
+  background: #3b3835;
+  color: #ece7e1;
+  box-shadow: 0 1em 3em rgba(0, 0, 0, 0.5);
+}
+
+.dialogTitle {
+  font-weight: 700;
+}
+
+.input {
+  padding: 0.5em 0.6em;
+  border: 1px solid #625950;
+  border-radius: 0.4em;
+  background: #2b2926;
+  color: #ece7e1;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.input:focus {
+  outline: 2px solid #7a6f63;
+  outline-offset: -2px;
+}
+
+.dialogError {
+  color: #ff9f9f;
+}
+
+.dialogActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.4em;
+}

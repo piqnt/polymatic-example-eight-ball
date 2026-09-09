@@ -10,8 +10,12 @@ body {
   font-size: 0.95em;
 }
 
-#room-status, #game-status {
-  user-select: text;
+/* the preact hud, over the table: transparent to pointers so a drag still aims
+   the cue, and only its own controls take the pointer back */
+#ui-root {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
 .terminal {

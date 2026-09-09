@@ -6,14 +6,14 @@ import { Terminal } from "./Terminal";
 import { FrameLoop } from "./FrameLoop";
 import { CueShot } from "../eight-ball/CueShot";
 import { Physics } from "../eight-ball/Physics";
-import { type BilliardContext } from "../eight-ball/BilliardContext";
 import { StatusOffline } from "./StatusOffline";
+import { type ClientBilliardContext } from "./ClientContext";
 import { Rack } from "../eight-ball/Rack";
 
 /**
  * Main class for the offline billiard game.
  */
-export class MainOffline extends Middleware<BilliardContext> {
+export class MainOffline extends Middleware<ClientBilliardContext> {
   constructor() {
     super();
     this.use(new FrameLoop());

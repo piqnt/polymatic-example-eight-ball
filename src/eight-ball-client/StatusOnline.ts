@@ -2,25 +2,20 @@ import { Memo, Middleware } from "polymatic";
 
 import { type ClientBilliardContext } from "./ClientContext";
 
+/** Publishes the online game's status line onto the hud - see HudData. */
 export class StatusOnline extends Middleware<ClientBilliardContext> {
-  statusElement: HTMLElement;
   memo = Memo.init();
 
   constructor() {
     super();
-    this.on("activate", this.handleActivate);
     this.on("deactivate", this.handleDeactivate);
     this.on("frame-loop", this.handleFrameLoop);
   }
 
-  handleActivate() {
-    this.statusElement = document.getElementById("game-status");
-  }
-
-  handleDeactivate() {
+  handleDeactivate = () => {
     this.memo.clear();
-    this.statusElement.innerText = null;
-  }
+    this.context.hud.statusText.value = "";
+  };
 
   handleFrameLoop = () => {
     const context = this.context;
@@ -36,7 +31,6 @@ export class StatusOnline extends Middleware<ClientBilliardContext> {
       )
     ) {
       const status = [];
-      status.push(context.room);
       if (context.gameOver) {
         if (context.winner) {
           if (context.winner === context.player.id) {
@@ -59,7 +53,7 @@ export class StatusOnline extends Middleware<ClientBilliardContext> {
           status.push(context.turn?.current === player?.turn ? "Your turn" : "Opponent's turn");
         }
       }
-      this.statusElement.innerText = status.join(" | ");
+      context.hud.statusText.value = status.join(" | ");
     }
   };
 }

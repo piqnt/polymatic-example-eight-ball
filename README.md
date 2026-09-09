@@ -20,6 +20,12 @@ The gameplay is simplified eight-ball pool:
 - Socket.io is used to communicate between client and server. The server is authoritative and clients only send actions to the server.
 - Creating and joining rooms is handled by lobby-server and lobby-client, which is independent from game and rooms.
 - Games state is not persisted. If the server restarts, all games are lost.
+- The client's interface is Preact (`src/shell`). It never imports a middleware:
+  the two sides share `src/eight-ball-client/HudData.ts`, and the signals on it
+  are the whole bridge. The status middlewares write them, and the shell calls
+  back through `src/shell/actions.ts`, which emits events the lobby listens for.
+  One `HudData` is made in `src/async-loader.ts` and handed to every game the
+  lobby starts, so the status survives switching between offline and a room.
 
 ### Development
 

@@ -9,7 +9,6 @@ import { type Auth, type ClientBilliardContext } from "./ClientContext";
  */
 export class RoomClient extends Middleware<ClientBilliardContext> {
   io: Socket;
-  statusElement: HTMLElement;
   connectionError: string;
 
   constructor() {
@@ -21,7 +20,6 @@ export class RoomClient extends Middleware<ClientBilliardContext> {
   }
 
   handleActivate = () => {
-    this.statusElement = document.getElementById("room-status");
     this.printRoomStatus();
 
     // set up auth id and secret
@@ -67,7 +65,7 @@ export class RoomClient extends Middleware<ClientBilliardContext> {
   };
 
   handleDeactivate = () => {
-    this.statusElement.innerText = "";
+    this.context.hud.roomError.value = null;
     this.io?.disconnect();
   };
 
@@ -83,6 +81,6 @@ export class RoomClient extends Middleware<ClientBilliardContext> {
   };
 
   printRoomStatus = () => {
-    this.statusElement.innerText = this.connectionError;
+    this.context.hud.roomError.value = this.connectionError ?? null;
   };
 }
