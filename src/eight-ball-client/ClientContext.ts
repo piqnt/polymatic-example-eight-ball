@@ -1,3 +1,5 @@
+import { type Application, type Container } from "pixi.js";
+
 import { BilliardContext, type Player } from "../eight-ball/BilliardContext";
 import { type HudData } from "./HudData";
 
@@ -7,6 +9,9 @@ export interface Auth {
 }
 
 export class ClientBilliardContext extends BilliardContext {
+  pixi?: Application;
+  scene?: Container;
+
   player?: Player;
   room?: string;
   auth?: Auth;
@@ -16,6 +21,9 @@ export class ClientBilliardContext extends BilliardContext {
    * game it starts - see HudData.
    */
   hud: HudData;
+
+  /** Called by the room client when the server has no such room, see LobbyClient. */
+  onRoomNotFound?: () => void;
 }
 
 /**

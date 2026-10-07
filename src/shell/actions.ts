@@ -25,6 +25,21 @@ export function closeJoin({ hud }: GameRuntime) {
   hud.joinError.value = null;
 }
 
+/** @action */
+export function rejoinRoom({ emit }: GameRuntime) {
+  emit("rejoin-room");
+}
+
+/** @action */
+export function declineRejoin({ emit }: GameRuntime) {
+  emit("decline-rejoin");
+}
+
+/** @action */
+export function closeNotice({ hud }: GameRuntime) {
+  hud.notice.value = null;
+}
+
 /** The lobby is what decides whether this is a room id - see LobbyClient. */
 /** @action */
 export function joinRoom({ emit }: GameRuntime, id: string) {

@@ -3,18 +3,21 @@ import { TbDoorEnter, TbPlayerPlay, TbPlus } from "react-icons/tb";
 import { useRuntime } from "./context";
 import { createRoom, openJoin, playOffline } from "./actions";
 import { JoinDialog } from "./JoinDialog";
+import { NoticeDialog, RejoinDialog } from "./RoomDialogs";
 import styles from "./Shell.module.css";
 
 /** The status lines above the table, and the lobby controls below it. */
 export function Hud() {
   const runtime = useRuntime();
-  const { joinOpen } = runtime.hud;
+  const { joinOpen, rejoinRoom, notice } = runtime.hud;
 
   return (
     <>
       <Status />
       <Controls />
       {joinOpen.value && <JoinDialog />}
+      {rejoinRoom.value && <RejoinDialog />}
+      {notice.value && !rejoinRoom.value && <NoticeDialog />}
     </>
   );
 }
@@ -29,7 +32,7 @@ function Status() {
           {room.value}
         </span>
       )}
-      {statusText.value && <span class={styles.line}>{statusText.value}</span>}
+      {statusText.value && !roomError.value && <span class={styles.line}>{statusText.value}</span>}
       {roomError.value && <span class={`${styles.line} ${styles.error}`}>{roomError.value}</span>}
     </div>
   );

@@ -1,8 +1,12 @@
 # 8-Ball Pool - Polymatic Example
 
-Multiplayer 8-Ball pool, implemented using [Polymatic](https://github.com/piqnt/polymatic) framework, [Socket.io](https://socket.io/), [Planck/Box2D](https://github.com/piqnt/planck) physics engine, and SVG rendering.
+Multiplayer 8-Ball pool, implemented using:
+- [Polymatic](https://github.com/piqnt/polymatic) framework
+- [Socket.io](https://socket.io/)
+- [Planck/Box2D](https://github.com/piqnt/planck) physics engine
+- [Pixi.js](https://pixijs.com/) rendering.
 
-[▶ Play Online](https://eight-ball.piqnt.com/)
+[Play Online](https://eight-ball.piqnt.com/)
 
 ### Gameplay
 

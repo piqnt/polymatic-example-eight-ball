@@ -31,6 +31,12 @@ export class HudData {
   joinOpen: Signal<boolean>;
   joinError: Signal<string | null>;
 
+  /** a room this browser was in and is still running, to ask whether to rejoin */
+  rejoinRoom: Signal<string | null>;
+
+  /** something to tell the player once, like a room they were in having closed */
+  notice: Signal<string | null>;
+
   constructor() {
     this.mode = signal<LobbyMode>("idle");
     this.room = signal<string | null>(null);
@@ -38,5 +44,7 @@ export class HudData {
     this.roomError = signal<string | null>(null);
     this.joinOpen = signal(false);
     this.joinError = signal<string | null>(null);
+    this.rejoinRoom = signal<string | null>(null);
+    this.notice = signal<string | null>(null);
   }
 }

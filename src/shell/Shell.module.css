@@ -1,4 +1,4 @@
-/* The table fills the window as an svg; this sits over it. #ui-root is
+/* The table fills the window as a canvas; this sits over it. #ui-root is
    transparent to pointers so a drag still aims the cue, and only the controls
    here take the pointer back. */
 

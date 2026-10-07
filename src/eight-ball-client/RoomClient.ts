@@ -1,8 +1,7 @@
 import { Middleware } from "polymatic";
 import { io, type Socket } from "socket.io-client";
-import { nanoid } from "nanoid";
 
-import { type Auth, type ClientBilliardContext } from "./ClientContext";
+import { type ClientBilliardContext } from "./ClientContext";
 
 /**
  * This runs on client and is responsible for receiving data from server, and passing user actions to server.
@@ -22,19 +21,8 @@ export class RoomClient extends Middleware<ClientBilliardContext> {
   handleActivate = () => {
     this.printRoomStatus();
 
-    // set up auth id and secret
-    // id is public and will be shared by other users, secret is private
-    const auth = {} as Auth;
-    auth.id = localStorage.getItem("auth-id");
-    auth.secret = localStorage.getItem("auth-secret");
-    if (!auth.id || !auth.secret) {
-      auth.id = "player-" + nanoid(8);
-      auth.secret = "secret-" + nanoid(8);
-      localStorage.setItem("auth-id", auth.id);
-      localStorage.setItem("auth-secret", auth.secret);
-    }
-
-    this.context.auth = auth;
+    // the login is picked by the lobby, see RoomStore
+    const auth = this.context.auth;
 
     const room = this.context.room;
     this.io = io("/room/" + room, {
@@ -45,6 +33,7 @@ export class RoomClient extends Middleware<ClientBilliardContext> {
       console.log("connect_error", err.message, err.message === "Invalid namespace");
       if (err.message === "Invalid namespace") {
         this.connectionError = "Room not found!";
+        this.context.onRoomNotFound?.();
       } else {
         this.connectionError = "Connection error: " + err.message;
       }

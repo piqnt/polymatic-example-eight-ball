@@ -11,8 +11,8 @@ export interface TurnPlayer {
 }
 
 export interface TurnBasedContext {
-  turn: Turn;
-  players: TurnPlayer[];
+  turn?: Turn;
+  players?: TurnPlayer[];
 }
 
 export class TurnBased extends Middleware<TurnBasedContext> {

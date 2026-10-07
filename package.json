@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "start": "tsx src/server.ts",
+    "start": "tsx src/server.ts --production",
     "dev": "tsx watch src/server.ts",
     "pretty": "prettier --write './src/**/*.{ts,tsx}'"
   },
@@ -14,8 +14,9 @@
     "@socket.io/admin-ui": "^0.5.1",
     "express": "^4.21.2",
     "nanoid": "^5.1.2",
+    "pixi.js": "^8.21.0",
     "planck": "^1.3.0",
-    "polymatic": "^0.0.11",
+    "polymatic": "^0.3.1",
     "preact": "^10.29.8",
     "react-icons": "^5.7.0",
     "socket.io": "^4.8.1",

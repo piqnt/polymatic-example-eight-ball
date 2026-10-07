@@ -6,7 +6,7 @@ export interface FrameLoopEvent {
 }
 
 /**
- * Implements variable-time game loop. It sends frame-loop event to all middlewares in each frame.
+ * Implements variable-time game loop. It sends frame-loop, and then frame-after, to all middlewares in each frame.
  */
 export class FrameLoop extends Middleware {
   lastTime = 0;
@@ -41,6 +41,8 @@ export class FrameLoop extends Middleware {
     this.event.dt = delta;
 
     this.emit("frame-loop", this.event);
+    // rendering, after the frame's data is updated
+    this.emit("frame-after", this.event);
 
     this.requestFrame();
   };

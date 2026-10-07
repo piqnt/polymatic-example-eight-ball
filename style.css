@@ -8,6 +8,7 @@ body {
   background: #323130;
   font-family: monospace;
   font-size: 0.95em;
+  overflow: hidden;
 }
 
 /* the preact hud, over the table: transparent to pointers so a drag still aims
@@ -15,124 +16,11 @@ body {
 #ui-root {
   position: absolute;
   inset: 0;
+  z-index: 1;
   pointer-events: none;
 }
 
-.terminal {
+canvas {
   display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
   touch-action: none;
-}
-
-.portrait.billiards {
-  transform: rotate(-90deg);
-}
-
-.score {
-  font-size: 0.08em;
-  font-family: sans-serif;
-  font-weight: 900;
-  fill: #d7d1cb;
-  stroke: #514940;
-  stroke-width: 0.07;
-  text-anchor: start;
-  dominant-baseline: middle;
-}
-
-.table {
-  fill: #3b6d46;
-}
-
-.rail {
-  fill: #514940;
-  stroke: #2d2a27;
-  stroke-width: 0.006;
-  stroke-linejoin: round;
-}
-
-.pocket {
-  fill: #1a1a1a;
-  stroke: #000000;
-  stroke-width: 0.006;
-}
-
-.cue {
-  stroke: black;
-  stroke-width: 0.008;
-  stroke-linecap: round;
-  stroke-dasharray: 0.02, 0.03;
-}
-
-.ball {
-  fill: white;
-  stroke: black;
-  stroke-width: 0.006;
-  transition: all 50ms;
-}
-
-.ball.black {
-  fill: #000000;
-  stroke: #ffffff;
-}
-.ball.white {
-  fill: #ffffff;
-  stroke: #000000;
-}
-.ball.yellow-solid {
-  fill: #ffdd00;
-  stroke: #000000;
-}
-.ball.yellow-stripe {
-  fill: #ffdd00;
-  stroke: #ffffff;
-}
-.ball.red-solid {
-  fill: #ff3300;
-  stroke: #000000;
-}
-.ball.red-stripe {
-  fill: #ff3300;
-  stroke: #ffffff;
-}
-.ball.burgundy-solid {
-  fill: #662200;
-  stroke: #000000;
-}
-.ball.burgundy-stripe {
-  fill: #662200;
-  stroke: #ffffff;
-}
-.ball.orange-solid {
-  fill: #ff8800;
-  stroke: #000000;
-}
-.ball.orange-stripe {
-  fill: #ff8800;
-  stroke: #ffffff;
-}
-.ball.green-solid {
-  fill: #00bb11;
-  stroke: #000000;
-}
-.ball.green-stripe {
-  fill: #00bb11;
-  stroke: #ffffff;
-}
-.ball.purple-solid {
-  fill: #9900ff;
-  stroke: #000000;
-}
-.ball.purple-stripe {
-  fill: #9900ff;
-  stroke: #ffffff;
-}
-.ball.blue-solid {
-  fill: #0077ff;
-  stroke: #000000;
-}
-.ball.blue-stripe {
-  fill: #0077ff;
-  stroke: #ffffff;
 }

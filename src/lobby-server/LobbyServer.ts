@@ -29,7 +29,8 @@ class LobbyServer extends Middleware<LobbyContext> {
     // set up connection and disconnect listeners
     io.on("connection", (socket) => {
       // socket.on("disconnect", (reason) => this.handleSocketDisconnect({ socket, reason }));
-      socket.on("create-room", () => this.handleCreateRoomRequest({ socket }));
+      socket.on("create-room", (ack) => this.handleCreateRoomRequest(ack));
+      socket.on("check-room", (id, ack) => this.handleCheckRoomRequest(id, ack));
       // this.handleSocketConnect({ socket });
     });
   }
@@ -38,14 +39,17 @@ class LobbyServer extends Middleware<LobbyContext> {
 
   // handleSocketDisconnect = ({ socket, reason }: { socket: Socket; reason: DisconnectReason }) => {};
 
-  handleCreateRoomRequest = ({ socket }: { socket: Socket }) => {
+  handleCreateRoomRequest = (ack: (room: { id: string }) => void) => {
+    if (typeof ack !== "function") return;
     const room = new Room();
-
     this.activateRoom(room);
+    ack({ id: room.id });
+  };
 
-    socket.emit("room-ready", {
-      id: room.id,
-    });
+  /** Whether a room is still running: its namespace is removed when it closes, see RoomServer. */
+  handleCheckRoomRequest = (id: string, ack: (alive: boolean) => void) => {
+    if (typeof ack !== "function") return;
+    ack(typeof id === "string" && this.context.io._nsps.has("/room/" + id));
   };
 
   activateRoom = (room: Room) => {
