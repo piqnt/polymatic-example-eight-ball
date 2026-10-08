@@ -6,10 +6,10 @@ export type LobbyMode = "idle" | "offline" | "online";
  * Everything the client's interface shows, as signals.
  *
  * This is the only thing the Preact shell can see of the game. The middleware
- * writes it - StatusOffline and StatusOnline once a frame, RoomClient and
- * LobbyClient as connections come and go - and the shell subscribes by reading
- * `.value` while it renders. Signals only notify on a real change, so a frame
- * that changes no wording re-renders nothing.
+ * writes it - StatusOffline, StatusComputer and StatusOnline once a frame,
+ * RoomClient and LobbyClient as connections come and go - and the shell
+ * subscribes by reading `.value` while it renders. Signals only notify on a
+ * real change, so a frame that changes no wording re-renders nothing.
  *
  * One instance is made by the lobby and handed to whichever game context is
  * activated, so the status line survives switching between offline and a room.

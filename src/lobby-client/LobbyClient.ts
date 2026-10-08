@@ -2,6 +2,7 @@ import { Runtime, Middleware } from "polymatic";
 import { io, type Socket } from "socket.io-client";
 
 import { MainClient } from "../eight-ball-client/MainClient";
+import { MainComputer } from "../eight-ball-client/MainComputer";
 import { MainOffline } from "../eight-ball-client/MainOffline";
 import { type HudData } from "../eight-ball-client/HudData";
 import { isValidRoomId, normalizeRoomId } from "../lobby/RoomId";
@@ -37,9 +38,10 @@ const CHECK_WAIT = 3000;
  * On load a tab that was in a room, and was reloaded, goes straight back in.
  * If this browser was in a room that is still running, the player is asked
  * whether to rejoin it, or told it has closed if they were in it recently.
- * Otherwise, or once they choose to stay, an offline game starts. The offline
- * game waits for that answer, since building it can keep a slow device too busy
- * to show the question. See RoomStore for what is remembered.
+ * Otherwise, or once they choose to stay, an offline game against the computer
+ * starts, or solo practice once that is asked for. The offline game waits for
+ * that answer, since building it can keep a slow device too busy to show the
+ * question. See RoomStore for what is remembered.
  *
  * The lobby socket is only opened when it is needed, so the game also works as a
  * static page with no server. Requests to the lobby have no timeout: building
@@ -49,7 +51,7 @@ const CHECK_WAIT = 3000;
 export class LobbyClient extends Middleware<LobbyClientContext> {
   io: Socket | null = null;
 
-  room: MainOffline | MainClient | null = null;
+  room: MainComputer | MainOffline | MainClient | null = null;
   // the online room, and the login it uses
   roomId: string | null = null;
   held: HeldAuth | null = null;
@@ -59,6 +61,8 @@ export class LobbyClient extends Middleware<LobbyClientContext> {
   // a game was started since the page loaded, offline or online
   started = false;
   startTimeout: ReturnType<typeof setTimeout> | null = null;
+  // the offline game is against the computer, until practice is asked for
+  computer = true;
   // counts rooms closed, so a room still waiting for its login is not opened after another was
   closed = 0;
 
@@ -68,6 +72,7 @@ export class LobbyClient extends Middleware<LobbyClientContext> {
     this.on("activate", this.handleActivate);
     this.on("deactivate", this.handleDeactivate);
 
+    this.on("play-computer", this.handlePlayComputer);
     this.on("play-offline", this.handlePlayOffline);
     this.on("create-room", this.handleCreateRoom);
     this.on("join-room", this.handleJoinRoom);
@@ -184,14 +189,34 @@ export class LobbyClient extends Middleware<LobbyClientContext> {
     this.started = true;
     this.closeRoom();
     this.context.hud.mode.value = "offline";
-    Runtime.activate((this.room = new MainOffline()), { hud: this.context.hud });
+    if (this.computer) {
+      // this device plays the first player, the computer the other, see Computer
+      const you = { id: "you" };
+      Runtime.activate((this.room = new MainComputer()), {
+        hud: this.context.hud,
+        players: [you, { id: "computer" }],
+        player: you,
+        computer: "computer",
+      });
+    } else {
+      Runtime.activate((this.room = new MainOffline()), { hud: this.context.hud });
+    }
   }
 
+  handlePlayComputer = () => {
+    this.playOffline(true);
+  };
+
   handlePlayOffline = () => {
+    this.playOffline(false);
+  };
+
+  playOffline(computer: boolean) {
+    this.computer = computer;
     leaveRoom();
     this.context.hud.rejoinRoom.value = null;
     this.startOffline();
-  };
+  }
 
   handleRejoinRoom = () => {
     const id = this.context.hud.rejoinRoom.value;

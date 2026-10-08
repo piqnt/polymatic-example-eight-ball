@@ -3,6 +3,10 @@ import { Middleware } from "polymatic";
 import { CueStick, type BilliardContext } from "./BilliardContext";
 import { isMyTurn } from "../eight-ball-client/ClientContext";
 
+// the impulse of a shot per meter of drag, and how far the cue is drawn past the ball per meter, the other way
+export const SHOT_STRENGTH = 0.05;
+export const CUE_REACH = 1.5;
+
 /**
  * Implements cue and shot:
  * - Listens to user pointer input events (from Terminal)
@@ -35,8 +39,8 @@ export class CueShot extends Middleware<BilliardContext> {
     cue.start.y = ball.position.y;
     const dx = point.x - cue.start.x;
     const dy = point.y - cue.start.y;
-    cue.end.x = cue.start.x - 1.5 * dx;
-    cue.end.y = cue.start.y - 1.5 * dy;
+    cue.end.x = cue.start.x - CUE_REACH * dx;
+    cue.end.y = cue.start.y - CUE_REACH * dy;
     this.context.cue = cue;
   }
 
@@ -45,8 +49,8 @@ export class CueShot extends Middleware<BilliardContext> {
     if (!cue) return;
     const dx = point.x - cue.start.x;
     const dy = point.y - cue.start.y;
-    cue.end.x = cue.start.x - 1.5 * dx;
-    cue.end.y = cue.start.y - 1.5 * dy;
+    cue.end.x = cue.start.x - CUE_REACH * dx;
+    cue.end.y = cue.start.y - CUE_REACH * dy;
   }
 
   handlePointerUp(point: { x: number; y: number }) {
@@ -54,9 +58,9 @@ export class CueShot extends Middleware<BilliardContext> {
     if (!cue) return;
     const dx = point.x - cue.start.x;
     const dy = point.y - cue.start.y;
-    cue.end.x = cue.start.x - 1.5 * dx;
-    cue.end.y = cue.start.y - 1.5 * dy;
-    const shot = { x: dx * -0.05, y: dy * -0.05 };
+    cue.end.x = cue.start.x - CUE_REACH * dx;
+    cue.end.y = cue.start.y - CUE_REACH * dy;
+    const shot = { x: dx * -SHOT_STRENGTH, y: dy * -SHOT_STRENGTH };
     const ball = cue.ball;
     this.context.cue = null;
 

@@ -1,7 +1,7 @@
-import { TbDoorEnter, TbPlayerPlay, TbPlus } from "react-icons/tb";
+import { TbDoorEnter, TbPlayerPlay, TbPlus, TbRobot } from "react-icons/tb";
 
 import { useRuntime } from "./context";
-import { createRoom, openJoin, playOffline } from "./actions";
+import { createRoom, openJoin, playComputer, playOffline } from "./actions";
 import { JoinDialog } from "./JoinDialog";
 import { NoticeDialog, RejoinDialog } from "./RoomDialogs";
 import styles from "./Shell.module.css";
@@ -43,8 +43,11 @@ function Controls() {
 
   return (
     <div class={styles.controls}>
+      <button type="button" class={styles.button} onClick={() => playComputer(runtime)}>
+        <TbRobot aria-hidden size="1em" /> Play Computer
+      </button>
       <button type="button" class={styles.button} onClick={() => playOffline(runtime)}>
-        <TbPlayerPlay aria-hidden size="1em" /> Play Offline
+        <TbPlayerPlay aria-hidden size="1em" /> Practice
       </button>
       <button type="button" class={styles.button} onClick={() => createRoom(runtime)}>
         <TbPlus aria-hidden size="1em" /> Create Room

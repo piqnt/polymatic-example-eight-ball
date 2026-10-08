@@ -117,4 +117,7 @@ export class BilliardContext {
   players?: Player[] = [];
   turn?: Turn;
   winner?: string;
+
+  // offline only: the id of the player the computer plays, if any, see Computer
+  computer?: string;
 }

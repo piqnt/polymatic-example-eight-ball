@@ -12,7 +12,7 @@ import { type ClientBilliardContext } from "./ClientContext";
 import { Rack } from "../eight-ball/Rack";
 
 /**
- * Main class for the offline billiard game.
+ * Main class for solo practice, offline, with no turns.
  */
 export class MainOffline extends Middleware<ClientBilliardContext> {
   constructor() {

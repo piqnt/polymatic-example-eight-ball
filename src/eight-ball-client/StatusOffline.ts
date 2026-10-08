@@ -2,7 +2,7 @@ import { Memo, Middleware } from "polymatic";
 
 import { type ClientBilliardContext } from "./ClientContext";
 
-/** Publishes the offline game's status line onto the hud - see HudData. */
+/** Publishes the status line of solo practice onto the hud - see HudData. */
 export class StatusOffline extends Middleware<ClientBilliardContext> {
   memo = Memo.init();
 
@@ -21,7 +21,7 @@ export class StatusOffline extends Middleware<ClientBilliardContext> {
     const context = this.context;
     if (this.memo.update(context.shotInProgress, context.gameOver)) {
       const status = [];
-      status.push("Offline Mode");
+      status.push("Practice");
       if (context.shotInProgress) {
         status.push("Shot in progress");
       } else if (context.gameOver) {

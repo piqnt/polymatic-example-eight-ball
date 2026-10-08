@@ -5,6 +5,11 @@ import { Ball, Pocket, Rail, type BilliardContext } from "./BilliardContext";
 
 export type Entity = Ball | Rail | Pocket;
 
+// how balls roll and bounce, the computer plans its shots with these too
+export const BALL_DAMPING = 1.5;
+export const BALL_DENSITY = 1;
+export const BALL_RESTITUTION = 0.99;
+
 /**
  * Billiards physics simulation. This doesn't include any game rules, or table geometry.
  */
@@ -109,15 +114,15 @@ export class Physics extends Middleware<BilliardContext> {
         type: "dynamic",
         bullet: true,
         position: data.position,
-        linearDamping: 1.5,
+        linearDamping: BALL_DAMPING,
         angularDamping: 1,
         userData: data,
       });
       body.createFixture({
         shape: new Circle(data.radius),
         friction: 0.1,
-        restitution: 0.99,
-        density: 1,
+        restitution: BALL_RESTITUTION,
+        density: BALL_DENSITY,
         userData: data,
       });
       return body;
